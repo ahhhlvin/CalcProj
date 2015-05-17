@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 
 
 
-// TODO: y√x // X! // INV code!
+// TODO: y√x // X! // PERCENTAGE // DECIMAL // INV code!
 
-// TODO: implement HORIZONTAL scrollview in textview!
+// TODO: implement HORIZONTAL scrollview in TextView!
 // TODO: change color + shape of buttons ['=' and 'rad' and 'deg']!
 // TODO: change app icon for calculator!
 
