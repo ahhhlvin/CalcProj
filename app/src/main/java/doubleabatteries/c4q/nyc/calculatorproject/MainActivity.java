@@ -8,7 +8,14 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 
 
+// TODO: implement HORIZONTAL scrollview in textview!
+// TODO: change color + shape of buttons!
+// TODO: remove action bar title (in landscape view or both)!
+// TODO: change icon for calculator!
+
+
 public class MainActivity extends ActionBarActivity {
+
 
 
     TextView textview;
@@ -22,10 +29,11 @@ public class MainActivity extends ActionBarActivity {
         textview = (TextView) findViewById(R.id.textView);
         textview.setTextSize(30);
 
-
         if(savedInstanceState != null){
             textview.setText(savedInstanceState.getString("equation"));
         }
+
+
 
         Button button7 = (Button) findViewById(R.id.seven);
         button7.setOnClickListener(new View.OnClickListener() {
