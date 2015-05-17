@@ -4,22 +4,35 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.math.BigDecimal;
 
 
 // TODO: implement HORIZONTAL scrollview in textview!
-// TODO: change color + shape of buttons!
-// TODO: remove action bar title (in landscape view or both)!
-// TODO: change icon for calculator!
+// TODO: change color + shape of buttons ['=' and 'rad' and 'deg']!
+// TODO: y√x // X! // INV code!
+// TODO: change app icon for calculator!
 
 
 public class MainActivity extends ActionBarActivity {
 
+    Expression expression;
+    boolean isRadian;
     boolean enterPressed = false;
     String ans;
     TextView textview;
     int parenOpenCount = 0;
+
+    Button buttonRadian;
+    Button buttonDegree;
+    Button buttonSin;
+    Button buttonLn;
+    Button buttonCos;
+    Button buttonLog;
+    Button buttonTan;
+    Button buttonSquareRoot;
+    Button buttonAns;
+    Button buttonExponent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,9 +202,11 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
-                    enterClear(enterPressed);
                     textview.append(((Button) view).getText().toString());
                 }
+
+                enterClear(enterPressed);
+
             }
         });
         Button buttonSubtract = (Button) findViewById(R.id.subtract);
@@ -200,9 +215,12 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
-                    enterClear(enterPressed);
                     textview.append(((Button) view).getText().toString());
-                }            }
+                }
+
+                enterClear(enterPressed);
+
+            }
         });
         Button buttonPercentage = (Button) findViewById(R.id.percentage);
         buttonPercentage.setOnClickListener(new View.OnClickListener() {
@@ -237,9 +255,11 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
-                    enterClear(enterPressed);
                     textview.append(((Button) view).getText().toString());
-                }            }
+                }
+
+                enterClear(enterPressed);
+            }
         });
         Button buttonDivide = (Button) findViewById(R.id.divide);
         buttonDivide.setOnClickListener(new View.OnClickListener() {
@@ -247,9 +267,11 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
-                    enterClear(enterPressed);
                     textview.append("/");
                 }
+
+                enterClear(enterPressed);
+
             }
         });
 
@@ -264,12 +286,11 @@ public class MainActivity extends ActionBarActivity {
                 } else if (parenOpenCount > 0 ) {
                     textview.setText("SYNTAX ERROR!");
                 } else {
-                    Expression expression = new Expression(textview.getText().toString());
+                    expression = new Expression(textview.getText().toString());
                     BigDecimal answer = expression.eval();
                     textview.setText(answer.toPlainString());
                     ans = answer.toPlainString();
                     enterPressed = true;
-
                 }
             }
         });
@@ -287,25 +308,32 @@ public class MainActivity extends ActionBarActivity {
         //
 
 
-        Button buttonRadian = (Button) findViewById(R.id.Radian);
+        buttonRadian = (Button) findViewById(R.id.Radian);
         if (buttonRadian != null) {
             buttonRadian.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //                    isRadian = true;
+                    buttonDegree.setEnabled(true);
+                    buttonRadian.setEnabled(false);
                     enterClear(enterPressed);
                 }
             });
         }
 
-        Button buttonDegree = (Button) findViewById(R.id.Degree);
+        buttonDegree = (Button) findViewById(R.id.Degree);
         if (buttonDegree != null) {
             buttonDegree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    isRadian = false;
+                    buttonDegree.setEnabled(false);
+                    buttonRadian.setEnabled(true);
                     enterClear(enterPressed);
                 }
             });
         }
+
 
         Button buttonFactorial = (Button) findViewById(R.id.factorial);
         if (buttonFactorial != null) {
@@ -323,31 +351,55 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
+                    buttonSin.setText("Sin^-1");
+                    buttonLn.setText("e^");
+                    buttonCos.setText("Cos^-1");
+                    buttonLog.setText("10^x");
+                    buttonTan.setText("Tan^-1");
+                    buttonSquareRoot.setText("x^2");
+                    buttonAns.setText("Rnd");
+                    buttonExponent.setText("y√x");
                 }
             });
         }
 
-        Button buttonSin = (Button) findViewById(R.id.sin);
+        buttonSin = (Button) findViewById(R.id.sin);
         if (buttonSin != null) {
             buttonSin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    parenOpenCount++;
-                    textview.append("sin(");
-
+                    if (buttonSin.getText().toString().equalsIgnoreCase("sin")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("sin(");
+                        }
+                    } else if (buttonSin.getText().toString().equalsIgnoreCase("sin^-1")) {
+                        parenOpenCount++;
+                        textview.append("asin(");
+                    }
                 }
             });
         }
 
-        Button buttonLn = (Button) findViewById(R.id.naturalLog);
+        buttonLn = (Button) findViewById(R.id.naturalLog);
         if (buttonLn != null) {
             buttonLn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    parenOpenCount++;
-                    textview.append("ln(");
+
+                    if (buttonLn.getText().toString().equalsIgnoreCase("ln")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("log(");
+                        }
+                    } else if (buttonLn.getText().toString().equalsIgnoreCase("e^")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("e^(");
+                        }
+                    }
 
                 }
             });
@@ -358,34 +410,54 @@ public class MainActivity extends ActionBarActivity {
             buttonPi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String text = textview.getText().toString();
                     enterClear(enterPressed);
-                    textview.append("PI");
-
+                    if (isOperator(textview.getText().toString()) || textview.getText().toString().charAt(text.length()-1) == '(') {
+                        textview.append("PI");
+                    }
                 }
             });
         }
 
-        Button buttonCos = (Button) findViewById(R.id.cos);
+        buttonCos = (Button) findViewById(R.id.cos);
         if (buttonCos != null) {
             buttonCos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    parenOpenCount++;
-                    textview.append("cos(");
+
+                    if (buttonCos.getText().toString().equalsIgnoreCase("cos")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("cos(");
+                        }
+                    } else if (buttonCos.getText().toString().equalsIgnoreCase("cos^-1")) {
+                        parenOpenCount++;
+                        textview.append("acos(");
+                    }
 
                 }
             });
         }
 
-        Button buttonLog = (Button) findViewById(R.id.log);
+        buttonLog = (Button) findViewById(R.id.log);
         if (buttonLog != null) {
             buttonLog.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    parenOpenCount++;
-                    textview.append("log(");
+
+                    if (buttonLog.getText().toString().equalsIgnoreCase("log")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("log10(");
+                        }
+                    } else if (buttonLog.getText().toString().equalsIgnoreCase("10^")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("10^(");
+                        }
+                    }
 
                 }
             });
@@ -397,45 +469,75 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    textview.append("e");
+                    if (isOperator(textview.getText().toString())) {
+                        textview.append("e");
+                    }
 
                 }
             });
         }
 
-        Button buttonTan = (Button) findViewById(R.id.tan);
+        buttonTan = (Button) findViewById(R.id.tan);
         if (buttonTan != null) {
             buttonTan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    parenOpenCount++;
-                    textview.append("tan(");
+
+                    if (buttonTan.getText().toString().equalsIgnoreCase("tan")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("tan(");
+                        }
+                    } else if (buttonTan.getText().toString().equalsIgnoreCase("tan^-1")) {
+                        parenOpenCount++;
+                        textview.append("atan(");
+                    }
 
                 }
             });
         }
 
-        Button buttonSquareRoot = (Button) findViewById(R.id.squareRoot);
+        buttonSquareRoot = (Button) findViewById(R.id.squareRoot);
         if (buttonSquareRoot != null) {
             buttonSquareRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    parenOpenCount++;
-                    textview.append("sqrt(");
+
+                    if (buttonSquareRoot.getText().toString().equalsIgnoreCase("√")) {
+                        if (isOperator(textview.getText().toString())) {
+                            parenOpenCount++;
+                            textview.append("sqrt(");
+                        }
+                    } else if (buttonSquareRoot.getText().toString().equalsIgnoreCase("x^2")) {
+                        // TODO: will there be an issue with parentheses and parsing order??
+                        if (!isOperator(textview.getText().toString()) || !textview.getText().toString().equals("")) {
+                            textview.append("^2");
+                        }
+                    }
 
                 }
             });
         }
 
-        Button buttonAns = (Button) findViewById(R.id.Answer);
+        buttonAns = (Button) findViewById(R.id.Answer);
         if (buttonAns != null) {
             buttonAns.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    textview.append(ans.toString());
+
+                    if (buttonAns.getText().toString().equalsIgnoreCase("Ans")) {
+                        if (isOperator(textview.getText().toString())) {
+                            textview.append(ans.toString());
+                        }
+                    } else if (buttonAns.getText().toString().equalsIgnoreCase("Rnd")) {
+                        double num = Math.random();
+                        if (isOperator(textview.getText().toString())) {
+                            textview.append(String.valueOf(num));
+                        }
+                    }
 
                 }
             });
@@ -447,14 +549,16 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
-                    parenOpenCount++;
-                    textview.append("10^(");
+                    if (isOperator(textview.getText().toString())) {
+                        parenOpenCount++;
+                        textview.append("10^(");
+                    }
 
                 }
             });
         }
 
-        Button buttonExponent = (Button) findViewById(R.id.exponential);
+        buttonExponent = (Button) findViewById(R.id.exponential);
         if (buttonExponent != null) {
             buttonExponent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -463,8 +567,19 @@ public class MainActivity extends ActionBarActivity {
                     if (textview.getText().equals("")) {
                     } else if (!isOperator(textview.getText().toString())){
                         enterClear(enterPressed);
-                        parenOpenCount++;
-                        textview.append("^(");
+
+                        if (buttonExponent.getText().toString().equalsIgnoreCase("x^y")) {
+                            if (isOperator(textview.getText().toString())) {
+                                parenOpenCount++;
+                                textview.append("^(");
+                            }
+                        } else if (buttonExponent.getText().toString().equalsIgnoreCase("y√x")) {
+                            // TODO!!
+                            if (isOperator(textview.getText().toString())) {
+                                textview.append("");
+                            }
+                        }
+
                     }
 
                 }
@@ -472,13 +587,8 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
+        }
 
-
-
-
-
-
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -493,6 +603,23 @@ public class MainActivity extends ActionBarActivity {
             textview.setText("");
             enterPressed = false;
 
+        }
+    }
+
+    // TODO: FIX THIS !!!!!
+    public void Parse(boolean bool) {
+        if (bool == false) {
+//            expression = new Expression("DEG("+textview.getText().toString()+")");
+//            BigDecimal answer = expression.eval();
+//            textview.setText(answer.toPlainString());
+//            ans = answer.toPlainString();
+//            enterPressed = true;
+        } else {
+//            expression = new Expression("RAD("+textview.getText().toString()+")");
+//            BigDecimal answer = expression.eval();
+//            textview.setText(answer.toPlainString());
+//            ans = answer.toPlainString();
+//            enterPressed = true;
         }
     }
 
