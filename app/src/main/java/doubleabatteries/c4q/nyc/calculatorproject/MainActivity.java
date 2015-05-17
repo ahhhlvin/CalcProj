@@ -1,9 +1,6 @@
 package doubleabatteries.c4q.nyc.calculatorproject;
-
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,14 +10,17 @@ import java.math.BigDecimal;
 
 public class MainActivity extends ActionBarActivity {
 
+
     TextView textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         textview = (TextView) findViewById(R.id.textView);
+        textview.setTextSize(30);
 
 
         if(savedInstanceState != null){
@@ -150,10 +150,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
-
-                } else if (!isOperator(textview.getText().toString())) {
-
-                };
+                }
             }
         });
         Button buttonBackspace = (Button) findViewById(R.id.backspace);
@@ -190,7 +187,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 Expression expression = new Expression(textview.getText().toString());
                 BigDecimal answer = expression.eval();
-                textview.setText(answer.toString());
+                textview.setText(answer.toPlainString());
             }
         });
 
