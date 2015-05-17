@@ -7,9 +7,11 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 
 
+
+// TODO: y√x // X! // INV code!
+
 // TODO: implement HORIZONTAL scrollview in textview!
 // TODO: change color + shape of buttons ['=' and 'rad' and 'deg']!
-// TODO: y√x // X! // INV code!
 // TODO: change app icon for calculator!
 
 
