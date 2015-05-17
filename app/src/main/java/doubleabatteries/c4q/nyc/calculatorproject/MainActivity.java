@@ -2,8 +2,6 @@ package doubleabatteries.c4q.nyc.calculatorproject;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,9 +12,10 @@ import java.math.BigDecimal;
 public class MainActivity extends ActionBarActivity {
 
     TextView textview;
+    int parenOpenCount = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -98,7 +97,42 @@ public class MainActivity extends ActionBarActivity {
         buttonParen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textview.append("(");
+                boolean shouldClose;
+
+                if(textview.getText().toString().equals("")){
+                    shouldClose = false;
+                }else{
+                    String equation = textview.getText().toString();
+                    char lastChar = equation.charAt(equation.length() - 1);
+
+                    if(isOperator(Character.toString(lastChar))){
+                        shouldClose = false;
+                    }else if(lastChar == '('){
+                        shouldClose = false;
+                    }else if(lastChar == ')' && parenOpenCount == 0){
+                        shouldClose = false;
+                        textview.append("*");
+                    }else if(lastChar == ')'){
+                        shouldClose = true;
+                    }else if(parenOpenCount == 0){
+                        shouldClose = false;
+                        textview.append("*");
+                    }else{
+                        shouldClose = true;
+                    }
+
+                }
+                    if(shouldClose){
+                        textview.append(")");
+                        parenOpenCount--;
+                    }else{
+                        textview.append("(");
+                        parenOpenCount++;
+                    }
+
+
+
+
             }
         });
         Button button0 = (Button) findViewById(R.id.zero);
@@ -160,8 +194,16 @@ public class MainActivity extends ActionBarActivity {
         buttonBackspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (textview.getText().toString().equals("")) {
+                String text =  textview.getText().toString();
+                if (text.equals("")) {
+                    // do nothing
                 } else {
+                    char lastChar = text.charAt(text.length() - 1);
+                    if(lastChar == '('){
+                        parenOpenCount--;
+                    }else if(lastChar == ')'){
+                        parenOpenCount++;
+                    }
                     textview.setText(textview.getText().toString().substring(0, textview.getText().toString().length() - 1));
                 }
             }
@@ -205,11 +247,6 @@ public class MainActivity extends ActionBarActivity {
         super.onSaveInstanceState(outState);
     }
 
-
-
-
-
-
     public boolean isOperator(String input) {
 
         if (textview.getText().toString().equals("")) {
@@ -230,9 +267,4 @@ public class MainActivity extends ActionBarActivity {
         return false;
 
     }
-
-
-
-
-
 }
