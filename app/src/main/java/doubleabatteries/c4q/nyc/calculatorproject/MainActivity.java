@@ -1,5 +1,4 @@
 package doubleabatteries.c4q.nyc.calculatorproject;
-
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,22 +8,33 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 
 
+// TODO: implement HORIZONTAL scrollview in textview!
+// TODO: change color + shape of buttons!
+// TODO: remove action bar title (in landscape view or both)!
+// TODO: change icon for calculator!
+
+
 public class MainActivity extends ActionBarActivity {
+
+
 
     TextView textview;
     int parenOpenCount = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         textview = (TextView) findViewById(R.id.textView);
-
+        textview.setTextSize(30);
 
         if(savedInstanceState != null){
             textview.setText(savedInstanceState.getString("equation"));
         }
+
+
 
         Button button7 = (Button) findViewById(R.id.seven);
         button7.setOnClickListener(new View.OnClickListener() {
@@ -184,10 +194,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
-
-                } else if (!isOperator(textview.getText().toString())) {
-
-                };
+                }
             }
         });
         Button buttonBackspace = (Button) findViewById(R.id.backspace);
@@ -232,7 +239,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 Expression expression = new Expression(textview.getText().toString());
                 BigDecimal answer = expression.eval();
-                textview.setText(answer.toString());
+                textview.setText(answer.toPlainString());
             }
         });
 
@@ -267,4 +274,6 @@ public class MainActivity extends ActionBarActivity {
         return false;
 
     }
+
 }
+
