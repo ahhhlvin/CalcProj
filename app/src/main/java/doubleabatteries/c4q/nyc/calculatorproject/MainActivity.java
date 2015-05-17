@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 
 public class MainActivity extends ActionBarActivity {
 
-
-
+    boolean enterPressed = false;
+    String ans;
     TextView textview;
     int parenOpenCount = 0;
 
@@ -41,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("7");
             }
         });
@@ -48,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("8");
             }
         });
@@ -55,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("9");
             }
         });
@@ -62,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("4");
             }
         });
@@ -70,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 int id = view.getId();
+                enterClear(enterPressed);
                 textview.append("5");
             }
         });
@@ -77,6 +82,7 @@ public class MainActivity extends ActionBarActivity {
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("6");
             }
         });
@@ -84,6 +90,7 @@ public class MainActivity extends ActionBarActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("1");
             }
         });
@@ -91,6 +98,7 @@ public class MainActivity extends ActionBarActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("2");
             }
         });
@@ -98,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("3");
             }
         });
@@ -133,9 +142,11 @@ public class MainActivity extends ActionBarActivity {
 
                 }
                     if(shouldClose){
+                        enterClear(enterPressed);
                         textview.append(")");
                         parenOpenCount--;
                     }else{
+                        enterClear(enterPressed);
                         textview.append("(");
                         parenOpenCount++;
                     }
@@ -149,6 +160,7 @@ public class MainActivity extends ActionBarActivity {
         button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append("0");
             }
         });
@@ -158,6 +170,7 @@ public class MainActivity extends ActionBarActivity {
         buttonDecimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enterClear(enterPressed);
                 textview.append(".");
             }
         });
@@ -176,6 +189,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
+                    enterClear(enterPressed);
                     textview.append(((Button) view).getText().toString());
                 }
             }
@@ -186,6 +200,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
+                    enterClear(enterPressed);
                     textview.append(((Button) view).getText().toString());
                 }            }
         });
@@ -211,6 +226,7 @@ public class MainActivity extends ActionBarActivity {
                     }else if(lastChar == ')'){
                         parenOpenCount++;
                     }
+                    enterClear(enterPressed);
                     textview.setText(textview.getText().toString().substring(0, textview.getText().toString().length() - 1));
                 }
             }
@@ -221,6 +237,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
+                    enterClear(enterPressed);
                     textview.append(((Button) view).getText().toString());
                 }            }
         });
@@ -230,18 +247,234 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
+                    enterClear(enterPressed);
                     textview.append("/");
-                }            }
+                }
+            }
         });
+
+
+// ENTER BUTTON HERE !!
+
         Button buttonEnter = (Button) findViewById(R.id.enter);
         buttonEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Expression expression = new Expression(textview.getText().toString());
-                BigDecimal answer = expression.eval();
-                textview.setText(answer.toPlainString());
+                if (textview.getText().equals("")) {
+                } else if (parenOpenCount > 0 ) {
+                    textview.setText("SYNTAX ERROR!");
+                } else {
+                    Expression expression = new Expression(textview.getText().toString());
+                    BigDecimal answer = expression.eval();
+                    textview.setText(answer.toPlainString());
+                    ans = answer.toPlainString();
+                    enterPressed = true;
+
+                }
             }
         });
+
+
+        //
+        //
+        //
+        //
+        // LANDSCAPE SCIENTIFIC BUTTON CODE
+        //
+        //
+        //
+        //
+        //
+
+
+        Button buttonRadian = (Button) findViewById(R.id.Radian);
+        if (buttonRadian != null) {
+            buttonRadian.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                }
+            });
+        }
+
+        Button buttonDegree = (Button) findViewById(R.id.Degree);
+        if (buttonDegree != null) {
+            buttonDegree.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                }
+            });
+        }
+
+        Button buttonFactorial = (Button) findViewById(R.id.factorial);
+        if (buttonFactorial != null) {
+            buttonFactorial.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                }
+            });
+        }
+
+        Button buttonInverse = (Button) findViewById(R.id.inverse);
+        if (buttonInverse != null) {
+            buttonInverse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                }
+            });
+        }
+
+        Button buttonSin = (Button) findViewById(R.id.sin);
+        if (buttonSin != null) {
+            buttonSin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    parenOpenCount++;
+                    textview.append("sin(");
+
+                }
+            });
+        }
+
+        Button buttonLn = (Button) findViewById(R.id.naturalLog);
+        if (buttonLn != null) {
+            buttonLn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    parenOpenCount++;
+                    textview.append("ln(");
+
+                }
+            });
+        }
+
+        Button buttonPi = (Button) findViewById(R.id.pi);
+        if (buttonPi != null) {
+            buttonPi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    textview.append("PI");
+
+                }
+            });
+        }
+
+        Button buttonCos = (Button) findViewById(R.id.cos);
+        if (buttonCos != null) {
+            buttonCos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    parenOpenCount++;
+                    textview.append("cos(");
+
+                }
+            });
+        }
+
+        Button buttonLog = (Button) findViewById(R.id.log);
+        if (buttonLog != null) {
+            buttonLog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    parenOpenCount++;
+                    textview.append("log(");
+
+                }
+            });
+        }
+
+        Button buttonE = (Button) findViewById(R.id.e);
+        if (buttonE != null) {
+            buttonE.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    textview.append("e");
+
+                }
+            });
+        }
+
+        Button buttonTan = (Button) findViewById(R.id.tan);
+        if (buttonTan != null) {
+            buttonTan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    parenOpenCount++;
+                    textview.append("tan(");
+
+                }
+            });
+        }
+
+        Button buttonSquareRoot = (Button) findViewById(R.id.squareRoot);
+        if (buttonSquareRoot != null) {
+            buttonSquareRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    parenOpenCount++;
+                    textview.append("sqrt(");
+
+                }
+            });
+        }
+
+        Button buttonAns = (Button) findViewById(R.id.Answer);
+        if (buttonAns != null) {
+            buttonAns.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    textview.append(ans.toString());
+
+                }
+            });
+        }
+
+        Button buttonExp = (Button) findViewById(R.id.exponent);
+        if (buttonExp != null) {
+            buttonExp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterClear(enterPressed);
+                    parenOpenCount++;
+                    textview.append("10^(");
+
+                }
+            });
+        }
+
+        Button buttonExponent = (Button) findViewById(R.id.exponential);
+        if (buttonExponent != null) {
+            buttonExponent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (textview.getText().equals("")) {
+                    } else if (!isOperator(textview.getText().toString())){
+                        enterClear(enterPressed);
+                        parenOpenCount++;
+                        textview.append("^(");
+                    }
+
+                }
+            });
+        }
+
+
+
+
+
 
 
 
@@ -253,6 +486,16 @@ public class MainActivity extends ActionBarActivity {
 
         super.onSaveInstanceState(outState);
     }
+
+
+    public void enterClear(boolean bool) {
+        if (bool == true) {
+            textview.setText("");
+            enterPressed = false;
+
+        }
+    }
+
 
     public boolean isOperator(String input) {
 
