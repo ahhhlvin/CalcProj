@@ -5,7 +5,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
+
+// TODO: y√x // X! // PERCENTAGE // DECIMAL // INV code!
+
+// TODO: implement HORIZONTAL scrollview in TextView!
+// TODO: change color + shape of buttons ['=' and 'rad' and 'deg']!
+// TODO: change app icon for calculator!
 
 
 // TODO: 1) PERCENTAGE && 2) DECIMAL
@@ -14,6 +21,7 @@ public class MainActivity extends ActionBarActivity {
 
     Expression expression;
 //    boolean isRadian;
+
     boolean enterPressed = false;
     String ans;
     TextView textview;
@@ -212,7 +220,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
-                    textview.append(" - ");
+                    textview.append(((Button) view).getText().toString());
                 }
 
                 enterClear(enterPressed);
@@ -252,7 +260,8 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
-                    textview.append(" * ");
+
+                    textview.append(((Button) view).getText().toString());
                 }
 
                 enterClear(enterPressed);
@@ -264,7 +273,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 if (textview.getText().equals("")) {
                 } else if (!isOperator(textview.getText().toString())){
-                    textview.append(" / ");
+                    textview.append("/");
                 }
 
                 enterClear(enterPressed);
@@ -284,7 +293,8 @@ public class MainActivity extends ActionBarActivity {
                     textview.setText("SYNTAX ERROR");
                 } else {
                     try {
-                        expression = new Expression(textview.getText().toString());
+                        String parsedString = parseEquation(textview.getText().toString());
+                        expression = new Expression(parsedString);
                         BigDecimal answer = expression.eval();
                         textview.setText(answer.toPlainString());
                         ans = answer.toPlainString();
@@ -342,6 +352,12 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     enterClear(enterPressed);
+                    String text = textview.getText().toString();
+                    if(text.equals("")){
+
+                    }else if(!isOperator(text)){
+                        textview.append("!");
+                    }
                 }
             });
         }
@@ -456,7 +472,7 @@ public class MainActivity extends ActionBarActivity {
                     } else if (buttonLog.getText().toString().equalsIgnoreCase("10^")) {
                         if (isOperator(textview.getText().toString())) {
                             parenOpenCount++;
-                            textview.append("*10^(");
+                            textview.append("10^(");
                         }
                     }
 
@@ -551,7 +567,7 @@ public class MainActivity extends ActionBarActivity {
                     enterClear(enterPressed);
                     if (isOperator(textview.getText().toString())) {
                         parenOpenCount++;
-                        textview.append(" * 10^(");
+                        textview.append("10^(");
                     }
 
                 }
@@ -569,7 +585,9 @@ public class MainActivity extends ActionBarActivity {
                         enterClear(enterPressed);
 
                         if (buttonExponent.getText().toString().equalsIgnoreCase("x^y")) {
+
                             if (!isOperator(textview.getText().toString())) {
+
                                 parenOpenCount++;
                                 textview.append("^(");
                             }
@@ -640,6 +658,84 @@ public class MainActivity extends ActionBarActivity {
 
         return false;
 
+    }
+
+    public boolean isOperator(char chara){
+        return isOperator(Character.toString(chara));
+    }
+
+    public boolean isNumber(char chara){
+        int aValue = (int) chara;
+        return aValue >= 48 && aValue <= 57;
+    }
+
+    public String parseEquation(String equation){
+
+        ArrayList<String> equationList = new ArrayList<String>();
+        String segment = "";
+
+        for(int i = 0; i < equation.length(); i++){
+            char currentChar = equation.charAt(i);
+            if(isOperator(currentChar)){
+                equationList.add(segment);
+                segment = "";
+                equationList.add(Character.toString(currentChar));
+            }else{
+                segment += currentChar;
+            }
+        }
+        equationList.add(segment);
+
+        equation = "";
+        for(String eqSegment : equationList){
+            eqSegment = parseEqSegment(eqSegment);
+            equation += eqSegment;
+        }
+        return equation;
+    }
+
+    public String parseEqSegment(String segment){
+
+        for(int i = 0; i < segment.length(); i++){
+            if(segment.charAt(i) == '!'){
+                int factIndex = i;
+                int numStart = 0;
+
+                for(int j = factIndex - 1; j >= 0; j--){
+
+                    if(!isNumber(segment.charAt(j))){
+                        numStart = j+1;
+                        break;
+                    }
+                }
+
+                String numString = segment.substring(numStart,factIndex);
+                int num = Integer.parseInt(numString);
+
+                String factString = "(1";
+
+                for(int j = 2; j <= num; j++){
+                    factString += "*" + j;
+                }
+
+                factString += ")";
+
+                String newSegment = "";
+
+                for(int j = 0; j < numStart; j++){
+                    newSegment += segment.charAt(j);
+                }
+                newSegment += factString;
+                for(int j = factIndex+1; j < segment.length(); j++){
+                    newSegment += segment.charAt(j);
+                }
+
+                return newSegment;
+
+            }
+        }
+
+        return segment;
     }
 
 }
