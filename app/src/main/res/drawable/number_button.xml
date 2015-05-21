@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners
+        android:radius="0dip">
+
+    </corners>
+
+    <solid android:color="#BBB">
+
+    </solid>
+
+    <item android:id="@android:id/mask">
+            <solid android:color="?android:colorAccent" />
+    </item>
+    <stroke
+        android:width="1dip"></stroke>
+
+</shape>
